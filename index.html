@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sokinihmwweimwei - Live AI Lesson Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; color: black; font-size: 10pt; }
+            .print-container { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            table { page-break-inside: auto; }
+            tr { page-break-inside: avoid; page-break-after: auto; }
+            .print-hide { display: none !important; }
+        }
+        [contenteditable="true"]:hover {
+            background-color: #f8fafc;
+            outline: 1px dashed #6366f1;
+        }
+        [contenteditable="true"]:focus {
+            background-color: #ffffff;
+            outline: 2px solid #6366f1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen">
+
+    <header class="bg-indigo-900 text-white p-4 shadow-lg no-print">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">Sokinihmwweimwei</h1>
+                <p class="text-xs text-indigo-200">Powered by OpenAI • Zero-Template Hyper-Explicit Lessons</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="copyToGoogleDocs()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg font-medium shadow transition flex items-center gap-2 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    Copy for Google Docs
+                </button>
+                <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg font-medium shadow transition flex items-center gap-2 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Print / Save PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-6xl mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 print-container">
+
+        <!-- Controls Sidebar -->
+        <div class="lg:col-span-4 bg-white p-5 rounded-xl shadow-md border border-slate-200 no-print space-y-4">
+            <h2 class="text-lg font-bold text-slate-800 border-b pb-2">AI Lesson Generator</h2>
+
+            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3">
+                <p class="text-xs font-semibold text-indigo-900">OpenAI is connected securely.</p>
+                <p class="text-[10px] text-indigo-700 mt-1">Your API key stays on this Chromebook and is never placed in this web page.</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">1. Subject</label>
+                <select id="inputSubject" class="w-full text-sm p-2 border rounded border-slate-300 focus:ring-2 focus:ring-indigo-500">
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science" selected>Science</option>
+                    <option value="Health">Health</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Spelling">Spelling</option>
+                    <option value="Writing">Writing</option>
+                    <option value="Grammar">Grammar</option>
+                    <option value="Listening & Speaking">Listening & Speaking</option>
+                    <option value="Social Studies">Social Studies</option>
+                    <option value="Physical Education">Physical Education</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">2. Grade Level</label>
+                <select id="inputGrade" class="w-full text-sm p-2 border rounded border-slate-300 focus:ring-2 focus:ring-indigo-500">
+                    <option value="ECE">ECE</option>
+                    <option value="1st Grade">1st Grade</option>
+                    <option value="2nd Grade">2nd Grade</option>
+                    <option value="3rd Grade">3rd Grade</option>
+                    <option value="4th Grade">4th Grade</option>
+                    <option value="5th Grade">5th Grade</option>
+                    <option value="6th Grade">6th Grade</option>
+                    <option value="7th Grade">7th Grade</option>
+                    <option value="8th Grade" selected>8th Grade</option>
+                    <option value="9th Grade">9th Grade</option>
+                    <option value="10th Grade">10th Grade</option>
+                    <option value="11th Grade">11th Grade</option>
+                    <option value="12th Grade">12th Grade</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">3. Specific Lesson Topic</label>
+                <input type="text" id="inputTopic" value="Photosynthesis" placeholder="e.g., Adding Mixed Fractions, Photosynthesis, Cause & Effect" class="w-full text-sm p-2 border rounded border-slate-300 focus:ring-2 focus:ring-indigo-500" onkeydown="if(event.key === 'Enter') generateLessonWithAI()">
+            </div>
+
+            <button id="generateBtn" onclick="generateLessonWithAI()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-lg shadow-md transition duration-150 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span>Generate Unique AI Lesson</span>
+            </button>
+
+            <div id="statusMessage" class="hidden text-xs p-3 rounded border"></div>
+        </div>
+
+        <!-- Live Preview Document -->
+        <div class="lg:col-span-8 bg-white p-6 sm:p-8 rounded-xl shadow-md border border-slate-200" id="lessonPlanDocument">
+            
+            <table class="w-full border-collapse border border-slate-800 text-xs sm:text-sm">
+                <tbody>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50 w-1/6">School:</td>
+                        <td class="border border-slate-800 p-2 w-2/6" contenteditable="true">OPES</td>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50 w-1/6">Date:</td>
+                        <td class="border border-slate-800 p-2 w-2/6">
+                            <input type="date" id="lessonDate" class="w-full border border-slate-300 rounded p-1 font-sans text-xs sm:text-sm">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Teacher:</td>
+                        <td class="border border-slate-800 p-2" contenteditable="true">Chestwood D. Nelber</td>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Subject:</td>
+                        <td class="border border-slate-800 p-2 font-semibold text-indigo-900" id="viewSubject" contenteditable="true">Science</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Grade:</td>
+                        <td class="border border-slate-800 p-2 font-semibold" id="viewGrade" contenteditable="true">8th Grade</td>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Time:</td>
+                        <td class="border border-slate-800 p-2" contenteditable="true">45 min.</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">IEP Accommodations:</td>
+                        <td class="border border-slate-800 p-2" colspan="3" contenteditable="true">
+                            <span class="font-bold text-indigo-900">Yes: [ X ]</span> &nbsp;&nbsp;&nbsp;&nbsp; No: [ &nbsp; ]
+                            <span class="text-xs text-slate-500 block italic mt-1">(Topic-specific sentence frames, visual anchors, and scaffolded peer routines embedded below)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Benchmark:</td>
+                        <td class="border border-slate-800 p-2 font-medium text-indigo-950" colspan="3" id="viewBenchmark" contenteditable="true">...</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Lesson Objective(s):</td>
+                        <td class="border border-slate-800 p-2 font-semibold text-indigo-950 bg-indigo-50/40" colspan="3" id="viewObjective" contenteditable="true">...</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Cross Linkages:</td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewCrossLinkages" contenteditable="true">...</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Academic Languages:</td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewVocabulary" contenteditable="true">...</td>
+                    </tr>
+
+                    <tr class="bg-slate-200 border border-slate-800">
+                        <th class="border border-slate-800 p-2 text-left font-bold" colspan="2">What Teacher Does (Verbatim Scripting & Explicit Pedagogy)</th>
+                        <th class="border border-slate-800 p-2 text-left font-bold" colspan="2">What Student Does & Topic-Specific ESL Stems</th>
+                    </tr>
+
+                    <!-- Dynamic Steps insertion point -->
+
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Textbook / Reference:</td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewTextbook" contenteditable="true">...</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Supplies Needed:</td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewSupplies" contenteditable="true">...</td>
+                    </tr>
+                    <tr>
+                        <td class="border border-slate-800 p-2 font-bold bg-slate-50">Reviewed & Approved by Principal:</td>
+                        <td class="border border-slate-800 p-2" colspan="3">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex-1" contenteditable="true">
+                                    <span class="font-bold">Signature:</span> ____________________________________
+                                </div>
+                                <div>
+                                    <span class="font-bold">Date:</span>
+                                    <input type="date" id="principalDate" class="border border-slate-300 rounded p-1 font-sans text-xs sm:text-sm inline-block ml-1">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="print-hide bg-amber-50/50">
+                        <td class="border border-slate-800 p-2 font-bold bg-amber-100/70 text-amber-900">
+                            Strengths & Weaknesses:
+                            <span class="block text-[10px] font-normal text-amber-700 italic">(Screen Only - Won't Print)</span>
+                        </td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewReflection" contenteditable="true">...</td>
+                    </tr>
+                    <tr class="print-hide bg-amber-50/50">
+                        <td class="border border-slate-800 p-2 font-bold bg-amber-100/70 text-amber-900">
+                            Future Consideration:
+                            <span class="block text-[10px] font-normal text-amber-700 italic">(Screen Only - Won't Print)</span>
+                        </td>
+                        <td class="border border-slate-800 p-2" colspan="3" id="viewFuture" contenteditable="true">...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <script>
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('lessonDate').value = today;
+        document.getElementById('principalDate').value = today;
+
+        function setStatus(msg, isError = false) {
+            const status = document.getElementById('statusMessage');
+            status.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200', 'bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+            status.classList.add(...(isError ? ['bg-red-50', 'text-red-700', 'border-red-200'] : ['bg-indigo-50', 'text-indigo-700', 'border-indigo-200']));
+            status.innerHTML = msg;
+        }
+
+        async function generateLessonWithAI() {
+            const subject = document.getElementById('inputSubject').value;
+            const grade = document.getElementById('inputGrade').value;
+            const topic = document.getElementById('inputTopic').value.trim();
+
+            if (!topic) {
+                setStatus("⚠️ Please enter a specific topic.", true);
+                return;
+            }
+
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('viewSubject').innerText = subject;
+            document.getElementById('viewGrade').innerText = grade;
+            setStatus('⏳ OpenAI is creating your lesson plan...');
+
+            try {
+                const response = await fetch('/api/generate-lesson', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject, grade, topic })
+                });
+
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok) throw new Error(result.error || `Server error (${response.status})`);
+
+                renderLessonData(result);
+                setStatus('✅ Unique AI Lesson Plan Generated Successfully!');
+            } catch (err) {
+                console.error(err);
+                setStatus(`❌ ${err.message}`, true);
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function renderLessonData(data) {
+            document.getElementById('viewBenchmark').innerText = data.benchmark || '';
+            document.getElementById('viewObjective').innerText = data.objective || '';
+            document.getElementById('viewVocabulary').innerText = data.vocabulary || '';
+            document.getElementById('viewCrossLinkages').innerText = data.crossLinkages || '';
+            document.getElementById('viewTextbook').innerText = data.textbook || '';
+            document.getElementById('viewSupplies').innerText = data.supplies || '';
+            document.getElementById('viewReflection').innerHTML = data.reflection || '';
+            document.getElementById('viewFuture').innerText = data.future || '';
+
+            const tbody = document.querySelector('#lessonPlanDocument table tbody');
+            tbody.querySelectorAll('.step-row').forEach(row => row.remove());
+            const textbookRow = document.getElementById('viewTextbook').parentElement;
+
+            (data.steps || []).forEach(step => {
+                const tr = document.createElement('tr');
+                tr.className = 'step-row';
+                tr.innerHTML = `
+                    <td class="border border-slate-800 p-3 align-top" colspan="2" contenteditable="true">
+                        <div class="font-bold text-indigo-900 border-b border-slate-300 pb-1 mb-2"></div>
+                        <div class="space-y-1"></div>
+                    </td>
+                    <td class="border border-slate-800 p-3 align-top" colspan="2" contenteditable="true">
+                        <div class="font-bold text-slate-600 border-b border-slate-300 pb-1 mb-2">Student Actions & ESL Stems</div>
+                        <div class="space-y-1"></div>
+                    </td>`;
+                tr.children[0].children[0].textContent = step.phase || '';
+                tr.children[0].children[1].textContent = step.teacher || '';
+                tr.children[1].children[1].textContent = step.student || '';
+                tbody.insertBefore(tr, textbookRow);
+            });
+        }
+
+        function copyToGoogleDocs() {
+            const element = document.getElementById('lessonPlanDocument');
+            const range = document.createRange();
+            range.selectNode(element);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                document.execCommand('copy');
+                alert('Lesson Plan copied to clipboard! Open Google Docs (docs.new) and press Ctrl + V to paste.');
+            } catch (err) {
+                alert('Copying failed automatically. Please select the table and press Ctrl + C.');
+            }
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+</body>
+</html>
